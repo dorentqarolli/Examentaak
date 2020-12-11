@@ -1,3 +1,3 @@
 <?php
-//FUNCTIONS_PAGINA
+//FUNCTIONS_PAGINA Alle functies komen hier te staan
 ?>
