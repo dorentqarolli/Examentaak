@@ -1,3 +1,3 @@
 <?php
-//INDEX_PAGINA
+//INDEX_PAGINA Alles komt hier tevoorschijn
 ?>
