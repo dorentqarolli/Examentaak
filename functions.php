@@ -48,7 +48,7 @@ function maakConnectie(){
                 behandelingen.behandeling as behandeling
                 FROM aandoeningen
                 INNER JOIN behandelingen
-                ON aandoeningen.id=behandelingen.id
+                ON aandoeningen.id=behandelingen.id_aandoening
                 WHERE behandelingen.id_dier =".$row["id"];
                 
                 $rstEigenaar = $conn->query($sqlEigenaar);
@@ -185,43 +185,35 @@ function maakConnectie(){
                 <h2>Eigenaar</h2>
             </div>
                 <div class='col-6'>
-                    <div class='form-group'>";
-                    foreach ($arrDier[$idCurrentDier]['eigenaars'] as $idEigenaar => $dataEigenaar) {
-                        $returnString .= "<label for='naamEigenaar'>Naam</label>
+                    <div class='form-group'>
+					<label for='naamEigenaar'>Naam</label>
 
-                        <input type='text' class='form-control' id='eigenaar' name='eigenaar' value=''>";
-
-                    };
-                $returnString .= "</div>
+                        <input type='text' class='form-control' id='eigenaar' name='eigenaar' value=''>
+						</div>
                 </div>
             <div class='col-12'>
                 <h2>Aandoening</h2>
             </div>
                 <div class='col-6'>
-                    <div class='form-group'>";
-                    foreach ($arrDier[$idCurrentDier]['aandoeningen'] as $idAandoening => $dataAandoening) {
-                        $returnString .= "<label for='aandoening'>Aandoening</label>
+                    <div class='form-group'>
+					<label for='aandoening'>Aandoening</label>
 
                         <input type='text' class='form-control' id='aandoening' name='aandoening' value=''>
                         <label for='beschrijvingAandoening'>Beschrijving</label>
-                        <input type='text' class='form-control' id='beschrijving' name='beschrijving' value=''>";
-
-                    };
-                    $returnString .= "</div>
+                        <input type='text' class='form-control' id='beschrijving' name='beschrijving' value=''>
+						</div>
                 </div>
             <div class='col-12'>
                 <h2>Behandeling</h2>
             </div>
                 <div class='col-10'>
-                    <div class='form-group'>";
-                    foreach ($arrDier[$idCurrentDier]['behandelingen'] as $idBehandeling => $dataBehandeling) {
-                        $returnString .= "<label for='datumBehandeling'>Datum</label>
+                    <div class='form-group'>
+					<label for='datumBehandeling'>Datum</label>
 
                         <input type='text' class='form-control' id='datum' name='datum' value=''>
                         <label for='behandeling'>Behandeling</label>
-                        <input type='text' class='form-control' id='behandeling' name='behandeling' value=''>";
-                    };
-                    $returnString .= "</div>
+                        <input type='text' class='form-control' id='behandeling' name='behandeling' value=''>
+						</div>
             </div><hr>";
         }
         return $returnString;
