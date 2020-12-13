@@ -85,8 +85,6 @@ function maakConnectie(){
 
     }
 	
-	//einde 2de push
-	//3de push
 	 function kiesDier($arrDier,$idCurrentDier){
         $returnString = "<div class='row'>
                 <div class='col-12'>
@@ -111,8 +109,6 @@ function maakConnectie(){
         return $returnString;
     }
 	
-	//einde derde push
-	//vierde push
 	function formDier($arrDier,$idCurrentDier){
         $returnString = NULL;
         if($idCurrentDier != NULL){
@@ -217,5 +213,4 @@ function maakConnectie(){
         }
         return $returnString;
     }
-	//einde vierde push
 ?>
