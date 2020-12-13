@@ -161,7 +161,7 @@ function maakConnectie(){
                     foreach ($arrDier[$idCurrentDier]['behandelingen'] as $idBehandeling => $dataBehandeling) {
                         $returnString .= "<label for='datumBehandeling'>Datum</label>
 
-                        <input type='text' class='form-control' id='datum' name='datum' value='{$dataBehandeling['datumBehandeling']}'>
+                        <input type='date' class='form-control' id='datum' name='datum' value='{$dataBehandeling['datumBehandeling']}'>
                         <label for='behandeling'>Behandeling</label>
                         <input type='text' class='form-control' id='behandeling' name='behandeling' value='{$dataBehandeling['behandeling']}'>";
 
@@ -210,7 +210,7 @@ function maakConnectie(){
                     <div class='form-group'>
 					<label for='datumBehandeling'>Datum</label>
 
-                        <input type='text' class='form-control' id='datum' name='datum' value=''>
+                        <input type='date' class='form-control' id='datum' name='datum' value=''>
                         <label for='behandeling'>Behandeling</label>
                         <input type='text' class='form-control' id='behandeling' name='behandeling' value=''>
 						</div>
