@@ -16,7 +16,6 @@ function maakConnectie(){
         return $conn;
     }
 	
-	
 	function maakArray($conn){
         //data selecteren
         $sql = "SELECT * FROM dieren";
@@ -28,7 +27,7 @@ function maakConnectie(){
                 $arrDier[$row["id"]]['naam'] = $row["naam"];
                 $sqlEigenaar = "SELECT 
                 eigenaars.id as idEigenaar,
-                eigenaars.volldeigenaam as naamEigenaar
+                eigenaars.volledigenaam as naamEigenaar
                 FROM eigenaar_dier
                 INNER JOIN eigenaars 
                 ON eigenaar_dier.id_eigenaar=eigenaars.id
@@ -49,7 +48,7 @@ function maakConnectie(){
                 behandelingen.behandeling as behandeling
                 FROM aandoeningen
                 INNER JOIN behandelingen
-                ON aandoeningen.id=behandelingen.id_ziekte
+                ON aandoeningen.id=behandelingen.id
                 WHERE behandelingen.id_dier =".$row["id"];
                 
                 $rstEigenaar = $conn->query($sqlEigenaar);
@@ -59,7 +58,7 @@ function maakConnectie(){
                             "naamEigenaar" => $rowEigenaar["naamEigenaar"]);
                     }
                 }
-
+//die($sqlAandoening);
                 $rstAandoening = $conn->query($sqlAandoening);
                 if ($rstAandoening->num_rows > 0) {
                     while($rowAandoening = $rstAandoening->fetch_assoc()) {
@@ -110,7 +109,6 @@ function maakConnectie(){
         return $returnString;
     }
 	
-	
 	function formDier($arrDier,$idCurrentDier){
         $returnString = NULL;
         if($idCurrentDier != NULL){
@@ -126,13 +124,17 @@ function maakConnectie(){
                     </div>
                 </div>
                 <div class='col-12'>
+
                     <h2>Eigenaars</h2>
+
                 </div>
                 <div class='col-6'>
                     <div class='form-group'>";
                     foreach ($arrDier[$idCurrentDier]['eigenaars'] as $idEigenaar => $dataEigenaar) {
                         $returnString .= "<label for='naamEigenaar'>Naam</label>
+
                         <input type='text' class='form-control' id='eigenaar' name='eigenaar' value='{$dataEigenaar['naamEigenaar']}'>";
+
                     };
                 $returnString .= "</div>
                 </div>
@@ -143,9 +145,11 @@ function maakConnectie(){
                     <div class='form-group'>";
                     foreach ($arrDier[$idCurrentDier]['aandoeningen'] as $idAandoening => $dataAandoening) {
                         $returnString .= "<label for='aandoening'>Aandoening</label>
+
                         <input type='text' class='form-control' id='aandoening' name='aandoening' value='{$dataAandoening['aandoening']}'>
                         <label for='beschrijvingAandoening'>Beschrijving</label>
                         <input type='text' class='form-control' id='beschrijving' name='beschrijving' value='{$dataAandoening['beschrijvingAandoening']}'>";
+
                     };
                     $returnString .= "</div>
                 </div>
@@ -156,9 +160,11 @@ function maakConnectie(){
                     <div class='form-group'>";
                     foreach ($arrDier[$idCurrentDier]['behandelingen'] as $idBehandeling => $dataBehandeling) {
                         $returnString .= "<label for='datumBehandeling'>Datum</label>
+
                         <input type='text' class='form-control' id='datum' name='datum' value='{$dataBehandeling['datumBehandeling']}'>
                         <label for='behandeling'>Behandeling</label>
                         <input type='text' class='form-control' id='behandeling' name='behandeling' value='{$dataBehandeling['behandeling']}'>";
+
                     };
                     $returnString .= "</div>
                 </div>
@@ -182,7 +188,9 @@ function maakConnectie(){
                     <div class='form-group'>";
                     foreach ($arrDier[$idCurrentDier]['eigenaars'] as $idEigenaar => $dataEigenaar) {
                         $returnString .= "<label for='naamEigenaar'>Naam</label>
+
                         <input type='text' class='form-control' id='eigenaar' name='eigenaar' value=''>";
+
                     };
                 $returnString .= "</div>
                 </div>
@@ -193,9 +201,11 @@ function maakConnectie(){
                     <div class='form-group'>";
                     foreach ($arrDier[$idCurrentDier]['aandoeningen'] as $idAandoening => $dataAandoening) {
                         $returnString .= "<label for='aandoening'>Aandoening</label>
+
                         <input type='text' class='form-control' id='aandoening' name='aandoening' value=''>
                         <label for='beschrijvingAandoening'>Beschrijving</label>
                         <input type='text' class='form-control' id='beschrijving' name='beschrijving' value=''>";
+
                     };
                     $returnString .= "</div>
                 </div>
@@ -206,6 +216,7 @@ function maakConnectie(){
                     <div class='form-group'>";
                     foreach ($arrDier[$idCurrentDier]['behandelingen'] as $idBehandeling => $dataBehandeling) {
                         $returnString .= "<label for='datumBehandeling'>Datum</label>
+
                         <input type='text' class='form-control' id='datum' name='datum' value=''>
                         <label for='behandeling'>Behandeling</label>
                         <input type='text' class='form-control' id='behandeling' name='behandeling' value=''>";
@@ -215,5 +226,31 @@ function maakConnectie(){
         }
         return $returnString;
     }
-	
+	function buttonBar($idCurrentDier){
+        $returnString = NULL;
+        if($idCurrentDier==NULL){
+            //Knoppen voor een nieuw dier
+            $returnString .="
+            <div class='row'>
+                <div class='col-md-12 text-center'>
+                    <div class='btn-group' role='group'>
+                      <button type='button' class='btn btn-success' onclick=\"this.form.actie.value='newDier'; this.form.submit()\"><i class='fa fa-plus'></i> Maak nieuw dier</button>
+                      <button type='button' class='btn btn-danger' onclick=\"this.form.actie.value=''; this.form.submit()\"><i class='fa fa-close'></i> Annuleren</button>
+                    </div>
+                </div>
+            </div>";
+        }else{
+            //Knoppen voor een bestaand dier
+            $returnString .="
+            <div class='row'>
+                <div class='col-md-12 text-center'>
+                    <div class='btn-group' role='group'>
+                      <button type='button' class='btn btn-success' onclick=\"this.form.actie.value='updateDier'; this.form.submit()\"><i class='fa fa-check'></i> Gegevens actualiseren</button>
+                      <button type='button' class='btn btn-danger' onclick=\"this.form.actie.value=''; this.form.submit()\"><i class='fa fa-close'></i> Annuleren</button>
+                    </div>
+                </div>
+            </div>";
+        }
+        return $returnString;
+    }
 ?>
