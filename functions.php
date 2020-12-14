@@ -16,7 +16,7 @@ function maakConnectie(){
         return $conn;
     }
 	
-	function maakArray($conn){
+	function maakArray1($conn){
         //data selecteren
         $sql = "SELECT * FROM dieren";
         $result = $conn->query($sql);
@@ -88,7 +88,7 @@ function maakConnectie(){
 
     }
 	
-	 function kiesDier($arrDier,$idCurrentDier){
+	 function kiesDier1($arrDier,$idCurrentDier){
         $returnString = "<div class='row'>
                 <div class='col-12'>
                     <div class='form-group'>
@@ -112,7 +112,7 @@ function maakConnectie(){
         return $returnString;
     }
 	
-	function formDier($arrDier,$idCurrentDier){
+	function formDier1($arrDier,$idCurrentDier){
         $returnString = NULL;
         if($idCurrentDier != NULL){
             $returnString = PHP_EOL . "

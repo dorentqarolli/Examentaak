@@ -5,31 +5,179 @@
 
     $arrDier = maakArray($conn);
 
-        if(isset($_GET['naam'])){
-            $naam = $_GET['naam'];
-        }else{
-            $naam = "";
-        }
-        if(isset($_GET['geboortedatum'])){
-            $geboortedatum = $_GET['geboortedatum'];
-        }else{
-            $geboortedatum = "";
-        }
-        if(isset($_GET['diersoort'])){
-            $diersoort = $_GET['diersoort'];
-        }else{
-            $diersoort = "";
-        }
-        if(isset($_GET['ras'])){
-            $ras = $_GET['ras'];
-        }else{
-            $ras = "";
-        }
-
-        $sql = "INSERT INTO dieren (naam,geboortedatum,diersoort,ras) VALUES ('$naam','$geboortedatum','$diersoort','$ras')";
+    //Array van dier maken
+    function maakArray($conn){
+        //data selecteren
+        $sql = "SELECT * FROM dieren";
         $result = $conn->query($sql);
-    
+        $arrDier = array();
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while($row = $result->fetch_assoc()) {
+                $arrDier[$row["id"]]['naam'] = $row["naam"];
+                $arrDier[$row["id"]]['geboortedatum'] = $row["geboortedatum"];
+                $arrDier[$row["id"]]['diersoort'] = $row["diersoort"];
+                $arrDier[$row["id"]]['ras'] = $row["ras"];
+            }    
+        } else {
+            echo "0 results";
+        }
+        return $arrDier;
+
+    }
+	
+	//Dropdown om mijn dier te selecteren
+    function kiesDier($arrDier,$idCurrentDier){
+        $returnString = "<div class='row'>
+                <div class='col-12'>
+                    <div class='form-group'>
+                        <label for='idCurrentDier'>Kies een dier</label>
+                        <select class='form-control' id='idCurrentDier' name='idCurrentDier' onchange='this.form.submit()'>
+                            <option value=''>Kies een nieuw dier</option>";
+        foreach($arrDier as $key => $value){
+            $selected = NULL;
+            if($key == $idCurrentDier){
+                $selected = "SELECTED";
+            }
+              $returnString .="
+                            <option value='$key' $selected >{$value['naam']}</option>";
+        }
+        $returnString .= "
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <hr>";
+        return $returnString;
+    }
+	//Dropdown met de gegevens van mijn dier
+    function formDier($arrDier,$idCurrentDier){
+        $returnString = NULL;
+        if($idCurrentDier != NULL){
+            $returnString = PHP_EOL . "
+            <div class='row'>
+                <div class='col-12'>
+                    <h2>Dier</h2>
+                </div>
+                <div class='col-6'>
+                    <div class='form-group'>
+                        <label for='naam'>naam</label>
+                        <input type='text' class='form-control' id='naam' name='naam' value='{$arrDier[$idCurrentDier]['naam']}'>
+                    </div>
+                    <div class='form-group'>
+                        <label for='geboortedatum'>geboortedatum</label>
+                        <input type='date' class='form-control' id='geboortedatum' name='geboortedatum' value='{$arrDier[$idCurrentDier]['geboortedatum']}'>
+                    </div>
+                </div>    
+                <div class='col-6'>
+                    <div class='form-group'>
+                        <label for='diersoort'>diersoort</label>
+                        <input type='text' class='form-control' id='diersoort' name='diersoort' value='{$arrDier[$idCurrentDier]['diersoort']}'>
+                    </div>
+                    <div class='form-group'>
+                        <label for='ras'>ras</label>
+                        <input type='text' class='form-control' id='ras' name='ras' value='{$arrDier[$idCurrentDier]['ras']}'>
+                    </div>
+                </div>
+            </div><hr>";
+            
+        }else{
+            $returnString = PHP_EOL . "<div class='row'>
+                <div class='col-12'>
+                    <h2>Dier</h2>
+                </div>
+                <div class='col-6'>
+                    <div class='form-group'>
+                        <label for='naam'>naam</label>
+                        <input type='text' class='form-control' id='naam' name='naam' value=''>
+                    </div>
+                    <div class='form-group'>
+                        <label for='geboortedatum'>geboortedatum</label>
+                        <input type='date' class='form-control' id='geboortedatum' name='geboortedatum' value=''>
+                    </div>
+                </div>    
+                <div class='col-6'>
+                    <div class='form-group'>
+                        <label for='diersoort'>diersoort</label>
+                        <input type='text' class='form-control' id='diersoort' name='diersoort' value=''>
+                    </div>
+                    <div class='form-group'>
+                        <label for='ras'>ras</label>
+                        <input type='text' class='form-control' id='ras' name='ras' value=''>
+                    </div>
+                </div>
+            </div><hr>";
+        }
+        return $returnString;
+    }
+	//Maak de knoppen onderaan het formulier
+    function buttonBarDier($idCurrentDier){
+        $returnString = NULL;
+        if($idCurrentDier==NULL){
+            //Knoppen voor een nieuw dier
+            $returnString .="
+            <div class='row'>
+                <div class='col-md-12 text-center'>
+                    <div class='btn-group' role='group'>
+                      <button type='button' class='btn btn-success' onclick=\"this.form.actie.value='newDier'; this.form.submit()\"><i class='fa fa-plus'></i> Maak nieuw dier</button>
+                      <button type='button' class='btn btn-danger' onclick=\"this.form.actie.value=''; this.form.submit()\"><i class='fa fa-close'></i> Annuleren</button>
+                    </div>
+                </div>
+            </div>";
+        }else{
+            //Knoppen voor een bestaand dier
+            $returnString .="
+            <div class='row'>
+                <div class='col-md-12 text-center'>
+                    <div class='btn-group' role='group'>
+                      <button type='button' class='btn btn-success' onclick=\"this.form.actie.value='updateDier'; this.form.submit()\"><i class='fa fa-check'></i> Gegevens actualiseren</button>
+                      <button type='button' class='btn btn-danger' onclick=\"this.form.actie.value=''; this.form.submit()\"><i class='fa fa-close'></i> Annuleren</button>
+                    </div>
+                </div>
+            </div>";
+        }
+        return $returnString;
+    }
+	$arrDier = maakArray($conn);
+
+	$idCurrentDier = NULL;
+	if(isset($_GET['idCurrentDier'])){
+		$idCurrentDier = $_GET['idCurrentDier'];
+	}
+
+	$actie = NULL;
+
+	if(isset($_GET['actie'])){
+		$actie = $_GET['actie'];
+		$_GET['actie'] = NULL;
+	}
+
+	if($idCurrentDier != NULL && $actie=="updateDier"){
+		$sql = "UPDATE dieren SET 
+		naam = '{$_GET['naam']}', 
+		geboortedatum = '{$_GET['geboortedatum']}', 
+		diersoort = '{$_GET['diersoort']}', 
+		ras = '{$_GET['ras']}'    
+		WHERE ID = $idCurrentDier";
+		if ($conn->query($sql) === TRUE) {
+			$arrDier = maakArray($conn);
+		} else {
+			 echo "Error updating record: " . $conn->error;
+		}
+	}elseif(isset($_GET['naam']) && $actie=="newDier"){
+		$sql = "INSERT INTO dieren (naam, geboortedatum, diersoort, ras)
+	VALUES ('{$_GET['naam']}', '{$_GET['geboortedatum']}', '{$_GET['diersoort']}', '{$_GET['ras']}')";
+
+		if ($conn->query($sql) === TRUE) {
+			$idCurrentDier = $conn->insert_id;
+			 $arrDier = maakArray($conn);
+		} else {
+			echo "Error: " . $sql . "<br>" . $conn->error;
+			}
+	}
+	
 ?>
+
 <!doctype html>
 <html lang="nl">
   <head>
@@ -45,7 +193,7 @@
     <title>Dier</title>
   </head>
   <body>
-    <form method="GET" action="dieren.php">
+    <form method="GET">
         <input type="hidden" name="actie" value="">
         <div class="container">
             <div class="row">
@@ -53,27 +201,17 @@
                     <h1>DIER</h1>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <h2>Dier</h2>
-                </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="naam">naam</label>
-                        <input type="text" class="form-control" id="naam" name="naam">
-                        <label for="geboortedatum">geboortedatum</label>
-                        <input type="date" class="form-control" id="geboortedatum" name="geboortedatum">
-                        <label for="diersoort">diersoort</label>
-                        <input type="text" class="form-control" id="diersoort" name="diersoort">
-                        <label for="ras">ras</label>
-                        <input type="text" class="form-control" id="ras" name="ras">
-                    </div>
-                    <div class="d-grid gap-2 col-6 mx-auto">
-                      <input class="btn btn-primary" type="submit" value="Nieuwe dier">
-                    </div>
-                </div>
-            </div><hr>
+            <hr>
+            <?php print kiesDier($arrDier,$idCurrentDier); ?>
+            <?php print formDier($arrDier,$idCurrentDier); ?>
+            <?php print buttonBarDier($idCurrentDier) ?>
         </div>
+		
+		<div class="btn-group">
+			<a href="index.php" class="btn btn-primary">Home Pagina</a>
+			<a href="eigenaars.php" class="btn btn-primary">nieuwe eigenaars invoegen</a>
+		</div>
+		
     </form>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
