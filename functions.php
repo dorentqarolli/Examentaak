@@ -25,6 +25,9 @@ function maakConnectie(){
             // output data of each row
             while($row = $result->fetch_assoc()) {
                 $arrDier[$row["id"]]['naam'] = $row["naam"];
+				$arrDier[$row["id"]]['geboortedatum'] = $row["geboortedatum"];
+                $arrDier[$row["id"]]['diersoort'] = $row["diersoort"];
+                $arrDier[$row["id"]]['ras'] = $row["ras"];
                 $sqlEigenaar = "SELECT 
                 eigenaars.id as idEigenaar,
                 eigenaars.volledigenaam as naamEigenaar
@@ -122,6 +125,20 @@ function maakConnectie(){
                         <label for='naam'>naam</label>
                         <input type='text' class='form-control' id='naam' name='naam' value='{$arrDier[$idCurrentDier]['naam']}'>
                     </div>
+					<div class='form-group'>
+                        <label for='geboortedatum'>geboortedatum</label>
+                        <input type='date' class='form-control' id='geboortedatum' name='geboortedatum' value='{$arrDier[$idCurrentDier]['geboortedatum']}'>
+                    </div>
+                </div>    
+                <div class='col-6'>
+                    <div class='form-group'>
+                        <label for='diersoort'>diersoort</label>
+                        <input type='text' class='form-control' id='diersoort' name='diersoort' value='{$arrDier[$idCurrentDier]['diersoort']}'>
+                    </div>
+                    <div class='form-group'>
+                        <label for='ras'>ras</label>
+                        <input type='text' class='form-control' id='ras' name='ras' value='{$arrDier[$idCurrentDier]['ras']}'>
+                    </div>
                 </div>
                 <div class='col-12'>
 
@@ -180,7 +197,21 @@ function maakConnectie(){
                         <label for='naam'>naam</label>
                         <input type='text' class='form-control' id='naam' name='naam' value=''>
                     </div>
+					<div class='form-group'>
+                    <label for='geboortedatum'>geboortedatum</label>
+                    <input type='date' class='form-control' id='geboortedatum' name='geboortedatum' value=''>
                 </div>
+            </div>    
+            <div class='col-6'>
+                <div class='form-group'>
+                    <label for='diersoort'>diersoort</label>
+                    <input type='text' class='form-control' id='diersoort' name='diersoort' value=''>
+                </div>
+                <div class='form-group'>
+                    <label for='ras'>ras</label>
+                    <input type='text' class='form-control' id='ras' name='ras' value=''>
+                </div>
+            </div>
             <div class='col-12'>
                 <h2>Eigenaar</h2>
             </div>
