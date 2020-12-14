@@ -6,7 +6,7 @@ include 'functions.php';
 
 $conn = maakConnectie();
 
-$arrDier = maakArray($conn);
+$arrDier = maakArray1($conn);
 //print_r($arrDier);
 
 $idCurrentDier = NULL;
@@ -74,10 +74,15 @@ if($idCurrentDier != NULL && $actie=="updateDier"){
 				</div>
 			</div>
 			<hr>
-			<?php print kiesDier($arrDier,$idCurrentDier); ?>
-			<?php print formDier($arrDier,$idCurrentDier); ?>
-			<?php print buttonBar($idCurrentDier) ?>
+			<?php print kiesDier1($arrDier,$idCurrentDier); ?>
+			<?php print formDier1($arrDier,$idCurrentDier); ?>
+			<?php print buttonBar($idCurrentDier); ?>
 
+		</div>
+		
+		<div class="btn-group">
+			<a href="dieren.php" class="btn btn-primary">Nieuwe dieren invoegen</a>
+			<a href="eigenaars.php" class="btn btn-primary">nieuwe eigenaars invoegen</a>
 		</div>
 	
 	</form>
@@ -88,4 +93,3 @@ if($idCurrentDier != NULL && $actie=="updateDier"){
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   </body>
 </html>
-
